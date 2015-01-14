@@ -1,3 +1,6 @@
+<h1><%= link_to 'Add Users', new_user_path %></h1>
+<br>
+<br>
 <% if users.any? %>
 	<% users.each do |user| %>
 		<h2>Github Profile: <%= user.username %></h2>
@@ -92,7 +95,7 @@
 		Objective-C: <%= commits_from_12_to_15.count("Objective-C") %> (<%= commits_from_12_to_15.count("Objective-C")/commits_from_12_to_15.count * 100 %> %)<br>
 		<h3>Commits Between 15:00 and 17:59:</h3> <br>
 		Ruby: <%= commits_from_15_to_18.count("Ruby") %> (<%= commits_from_15_to_18.count("Ruby")/commits_from_15_to_18.count * 100 %> %)<br>
-		JavaScript: <%= commits_from_15_to_18.count("JavaScript") %> (<%= commits_from_15_to_18.count("JavaScript")/commits_from_00_to_03.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_15_to_18.count("JavaScript") %> (<%= commits_from_15_to_18.count("JavaScript")/commits_from_15_to_18.count * 100 %> %)<br>
 		Java: <%= commits_from_15_to_18.count("Java") %> (<%= commits_from_15_to_18.count("Java")/commits_from_15_to_18.count * 100 %> %)<br>
 		Objective-C: <%= commits_from_15_to_18.count("Objective-C") %> (<%= commits_from_15_to_18.count("Objective-C")/commits_from_15_to_18.count * 100 %> %)<br>
 		<h3>Commits Between 18:00 and 20:59:</h3> <br>
