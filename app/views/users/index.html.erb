@@ -1,0 +1,116 @@
+<% if users.any? %>
+	<% users.each do |user| %>
+		<h2>Github Profile: <%= user.username %></h2>
+		<% response = Faraday.get "https://api.github.com/users/#{user.username}/repos?client_id=#{Rails.application.secrets.client_id_key}&client_secret=#{Rails.application.secrets.client_secret_key}" %>
+		<% commits_from_00_to_03 = [] %>
+		<% commits_from_03_to_06 = [] %>
+		<% commits_from_06_to_09 = [] %>
+		<% commits_from_09_to_12 = [] %>
+		<% commits_from_12_to_15 = [] %>
+		<% commits_from_15_to_18 = [] %>
+		<% commits_from_18_to_21 = [] %>
+		<% commits_from_21_to_24 = [] %>
+		<% JSON.parse(response.body).each do |repo|  %>
+			<% repo["language"] %>
+			<% commits = Faraday.get "https://api.github.com/repos/#{user.username}/#{repo['name']}/commits?client_id=#{Rails.application.secrets.client_id_key}&client_secret=#{Rails.application.secrets.client_secret_key}" %>
+			<% JSON.parse(commits.body).each do |commit|  %>
+				<% if ['00', '01', '02'].include?(commit["commit"]["author"]['date'][11..12]) %>
+					<% commits_from_00_to_03 << repo["language"] %>
+				<% elsif ['03', '04', '05'].include?(commit["commit"]["author"]['date'][11..12]) %>
+					<% commits_from_03_to_06 << repo["language"] %>
+				<% elsif ['06', '07', '08'].include?(commit["commit"]["author"]['date'][11..12]) %>
+					<% commits_from_06_to_09 << repo["language"] %>
+				<% elsif ['09', '10', '11'].include?(commit["commit"]["author"]['date'][11..12]) %>
+					<% commits_from_09_to_12 << repo["language"] %>
+				<% elsif ['12', '13', '14'].include?(commit["commit"]["author"]['date'][11..12]) %>
+					<% commits_from_12_to_15 << repo["language"] %>
+				<% elsif ['15', '16', '17'].include?(commit["commit"]["author"]['date'][11..12]) %>
+					<% commits_from_15_to_18 << repo["language"] %>
+				<% elsif ['18', '19', '20'].include?(commit["commit"]["author"]['date'][11..12]) %>
+					<% commits_from_18_to_21 << repo["language"] %>
+				<% else %>
+					<% commits_from_21_to_24 << repo["language"] %>
+				<% end %>
+			<% end %>
+		<% end %>
+		<% commits_from_00_to_03.compact! %>
+		<%  if commits_from_00_to_03.count == 0 %>
+			<% commits_from_00_to_03 = [1] %>
+		<% end %>
+		<% commits_from_03_to_06.compact! %>
+		<%  if commits_from_03_to_06.count == 0 %>
+			<% commits_from_03_to_06 = [1] %>
+		<% end %>
+		<% commits_from_06_to_09.compact! %>
+		<%  if commits_from_06_to_09.count == 0 %>
+			<% commits_from_06_to_09 = [1] %>
+		<% end %>
+		<% commits_from_09_to_12.compact! %>
+		<%  if commits_from_09_to_12.count == 0 %>
+			<% commits_from_09_to_12 = [1] %>
+		<% end %>
+		<% commits_from_12_to_15.compact! %>
+		<%  if commits_from_12_to_15.count == 0 %>
+			<% commits_from_12_to_15 = [1]%>
+		<% end %>
+		<% commits_from_15_to_18.compact! %>
+		<%  if commits_from_15_to_18.count == 0 %>
+			<% commits_from_15_to_18 = [1] %>
+		<% end %>
+		<% commits_from_18_to_21.compact! %>
+		<%  if commits_from_18_to_21.count == 0 %>
+			<% commits_from_18_to_21 = [1] %>
+		<% end %>
+		<% commits_from_21_to_24.compact! %>
+		<%  if commits_from_21_to_24.count == 0 %>
+			<% commits_from_21_to_24 = [1] %>
+		<% end %>
+		<h3>Commits Between 00:00 and 02:59:</h3> <br>
+		Ruby: <%= commits_from_00_to_03.count("Ruby") %> (<%= commits_from_00_to_03.count("Ruby")/commits_from_00_to_03.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_00_to_03.count("JavaScript") %> (<%= commits_from_00_to_03.count("JavaScript")/commits_from_00_to_03.count * 100 %> %)<br>
+		Java: <%= commits_from_00_to_03.count("Java") %> (<%= commits_from_00_to_03.count("Java")/commits_from_00_to_03.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_00_to_03.count("Objective-C") %> (<%= commits_from_00_to_03.count("Objective-C")/commits_from_00_to_03.count * 100 %> %)<br>
+		<h3>Commits Between 03:00 and 05:59:</h3> <br>
+		Ruby: <%= commits_from_03_to_06.count("Ruby") %> (<%= commits_from_03_to_06.count("Ruby")/commits_from_03_to_06.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_03_to_06.count("JavaScript") %> (<%= commits_from_03_to_06.count("JavaScript")/commits_from_03_to_06.count * 100 %> %)<br>
+		Java: <%= commits_from_03_to_06.count("Java") %> (<%= commits_from_03_to_06.count("Java")/commits_from_03_to_06.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_03_to_06.count("Objective-C") %> (<%= commits_from_03_to_06.count("Objective-C")/commits_from_03_to_06.count * 100 %> %)<br>
+		<h3>Commits Between 06:00 and 08:59:</h3> <br>
+		Ruby: <%= commits_from_06_to_09.count("Ruby") %> (<%= commits_from_06_to_09.count("Ruby")/commits_from_06_to_09.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_06_to_09.count("JavaScript") %> (<%= commits_from_06_to_09.count("JavaScript")/commits_from_06_to_09.count * 100 %> %)<br>
+		Java: <%= commits_from_06_to_09.count("Java") %> (<%= commits_from_06_to_09.count("Java")/commits_from_06_to_09.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_06_to_09.count("Objective-C") %> (<%= commits_from_06_to_09.count("Objective-C")/commits_from_06_to_09.count * 100 %> %)<br>
+		<h3>Commits Between 09:00 and 11:59:</h3> <br>
+		Ruby: <%= commits_from_09_to_12.count("Ruby") %> (<%= commits_from_09_to_12.count("Ruby")/commits_from_09_to_12.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_09_to_12.count("JavaScript") %> (<%= commits_from_09_to_12.count("JavaScript")/commits_from_09_to_12.count * 100 %> %)<br>
+		Java: <%= commits_from_09_to_12.count("Java") %> (<%= commits_from_09_to_12.count("Java")/commits_from_09_to_12.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_09_to_12.count("Objective-C") %> (<%= commits_from_09_to_12.count("Objective-C")/commits_from_09_to_12.count * 100 %> %)<br>
+		<h3>Commits Between 12:00 and 14:59:</h3> <br>
+		Ruby: <%= commits_from_12_to_15.count("Ruby") %> (<%= commits_from_12_to_15.count("Ruby")/commits_from_12_to_15.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_12_to_15.count("JavaScript") %> (<%= commits_from_12_to_15.count("JavaScript")/commits_from_12_to_15.count * 100 %> %)<br>
+		Java: <%= commits_from_00_to_03.count("Java") %> (<%= commits_from_00_to_03.count("Java")/commits_from_12_to_15.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_12_to_15.count("Objective-C") %> (<%= commits_from_12_to_15.count("Objective-C")/commits_from_12_to_15.count * 100 %> %)<br>
+		<h3>Commits Between 15:00 and 17:59:</h3> <br>
+		Ruby: <%= commits_from_15_to_18.count("Ruby") %> (<%= commits_from_15_to_18.count("Ruby")/commits_from_15_to_18.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_15_to_18.count("JavaScript") %> (<%= commits_from_15_to_18.count("JavaScript")/commits_from_00_to_03.count * 100 %> %)<br>
+		Java: <%= commits_from_15_to_18.count("Java") %> (<%= commits_from_15_to_18.count("Java")/commits_from_15_to_18.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_15_to_18.count("Objective-C") %> (<%= commits_from_15_to_18.count("Objective-C")/commits_from_15_to_18.count * 100 %> %)<br>
+		<h3>Commits Between 18:00 and 20:59:</h3> <br>
+		Ruby: <%= commits_from_18_to_21.count("Ruby") %> (<%= commits_from_18_to_21.count("Ruby")/commits_from_18_to_21.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_18_to_21.count("JavaScript") %> (<%= commits_from_18_to_21.count("JavaScript")/commits_from_18_to_21.count * 100 %> %)<br>
+		Java: <%= commits_from_18_to_21.count("Java") %> (<%= commits_from_18_to_21.count("Java")/commits_from_18_to_21.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_18_to_21.count("Objective-C") %> (<%= commits_from_18_to_21.count("Objective-C")/commits_from_18_to_21.count * 100 %> %)<br>
+		<h3>Commits Between 21:00 and 23:59:</h3> <br>
+		Ruby: <%= commits_from_21_to_24.count("Ruby") %> (<%= commits_from_21_to_24.count("Ruby")/commits_from_21_to_24.count * 100 %> %)<br>
+		JavaScript: <%= commits_from_21_to_24.count("JavaScript") %> (<%= commits_from_21_to_24.count("JavaScript")/commits_from_21_to_24.count * 100 %> %)<br>
+		Java: <%= commits_from_21_to_24.count("Java") %> (<%= commits_from_21_to_24.count("Java")/commits_from_21_to_24.count * 100 %> %)<br>
+		Objective-C: <%= commits_from_21_to_24.count("Objective-C") %> (<%= commits_from_21_to_24.count("Objective-C")/commits_from_21_to_24.count * 100 %> %)<br>	 
+	<% end %>
+<% else %>
+	No users yet
+<% end %>
+
+
+
+
+
